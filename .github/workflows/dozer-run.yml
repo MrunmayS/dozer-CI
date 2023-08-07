@@ -1,0 +1,13 @@
+name: Run Python script
+on:
+  push:
+    branches:
+      - main
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Run dozer
+        run: dozer -c dozer-config.yaml
