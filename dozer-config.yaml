@@ -1,0 +1,39 @@
+app_name: btc_history
+
+connections:
+  - config : !S3Storage
+      details:
+        access_key_id: 'AKIA2JYZFEFYHOSKXGKA'	
+        secret_access_key: '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'
+        region: 'us-west-2'
+        bucket_name: mrun-stress-test-dozer
+      tables:
+        - !Table
+          name: btc_data
+          config: !CSV
+            path: btc_data 
+            extension: .csv
+    name: s3
+
+
+
+sources:
+        - name: history_data
+          table_name: btc_data
+          connection: s3
+         
+sql: |
+
+  SELECT Timestamp as tp, High as hi, Low as lo, Weighted_Price as wp
+  INTO closehigh_cache
+  FROM history_data
+  WHERE Close > Open;
+
+
+endpoints:
+        - name: closehigh_endpoint
+          path: /btc_data
+          table_name: closehigh_cache
+
+telemetry:
+  metrics: !Prometheus

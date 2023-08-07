@@ -1,0 +1,69 @@
+// Dozer Generated for dozer.generated.closehigh_endpoint
+
+syntax = "proto3";
+package dozer.generated.closehigh_endpoint;
+
+
+import "types.proto";
+/**
+ * TypedService provides explicit and strongly-typed data access experience for developers.
+ *
+ * This allows for a more user-friendly and predictable API. Developers can rely on the explicitly defined types to guide them and catch errors at compile-time.
+ */
+service ClosehighEndpoints {
+  /**
+   * Counts the number of records satisfying the given query. See [Query](../query) for the query format.
+   *
+   * If no query is specified, total number of records will be returned.
+   */
+  rpc count(QueryClosehighEndpointsRequest) returns (CountClosehighEndpointsResponse);
+  /**
+   * Performs query. See [Query](../query) for the query format.
+   *
+   * If no query is specified, the first 50 records will be returned.
+   */
+  rpc query(QueryClosehighEndpointsRequest) returns (QueryClosehighEndpointsResponse);
+
+}
+
+// Request for `count` and `query`.
+message QueryClosehighEndpointsRequest {
+  // JSON query string.
+  optional string query = 1;
+}
+
+// Response for `count`.
+message CountClosehighEndpointsResponse {
+  // The number of records.
+  uint64 count = 1;
+}
+
+// Response for `query`.
+message QueryClosehighEndpointsResponse {
+  // The list of records.
+  repeated ClosehighEndpointWithId records = 1;
+}
+
+/**
+ * ClosehighEndpoint record type.
+ * 
+ * Nullable fields will be generated as `optional` fields.
+ */
+message ClosehighEndpoint {
+
+  optional int64 tp = 1;
+  optional string hi = 2;
+  optional string lo = 3;
+  optional string wp = 4;
+  // Records with same primary key will have increasing version.
+  uint32 __dozer_record_version = 5;
+}
+
+// A record with its id in cache.
+message ClosehighEndpointWithId {
+  // The record id.
+  uint64 id = 1;
+  // The record data.
+  ClosehighEndpoint record = 2;
+}
+
