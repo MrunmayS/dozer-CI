@@ -1,39 +1,38 @@
-app_name: btc_history
-
+app_name: local-storage-sample
 connections:
-  - config : !S3Storage
+  - config : !LocalStorage
       details:
-        access_key_id: 'AKIA2JYZFEFYHOSKXGKA'	
-        secret_access_key: '07W51CCTVAQ0SFdwBHoQM8M0hIpVQjA2R2k25OsW'
-        region: 'us-west-2'
-        bucket_name: mrun-stress-test-dozer
+        path: data
       tables:
         - !Table
-          name: btc_data
-          config: !CSV
-            path: btc_data 
-            extension: .csv
-    name: s3
+          name: trips
+          config: !Parquet
+            path: trips
+            extension: .parquet
+    name: ny_taxi
 
-
+sql: |
+  SELECT 
+    PULocationID as pickup_location, 
+    DOLocationID as dropoff_location, 
+    COUNT(PULocationID, DOLocationID) as total_trips, 
+    MIN(trip_time) as min_trip_time,  
+    MAX(trip_time) as max_trip_time 
+  INTO trips_cache
+  FROM trips
+  GROUP BY PULocationID, DOLocationID
+  HAVING COUNT(PULocationID, DOLocationID) > 1000;
 
 sources:
-        - name: history_data
-          table_name: btc_data
-          connection: s3
-         
-sql: |
-
-  SELECT Timestamp as tp, High as hi, Low as lo, Weighted_Price as wp
-  INTO closehigh_cache
-  FROM history_data
-  WHERE Close > Open;
-
+  - name: trips
+    table_name: trips
+    connection: ny_taxi
 
 endpoints:
-        - name: closehigh_endpoint
-          path: /btc_data
-          table_name: closehigh_cache
-
-telemetry:
-  metrics: !Prometheus
+  - name: trips_cache
+    path: /trips
+    table_name: trips_cache
+    index:
+      primary_key: 
+        - pickup_location
+        - dropoff_location
