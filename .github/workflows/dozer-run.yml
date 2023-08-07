@@ -67,7 +67,7 @@ jobs:
             # Useful for jobs where the matrix is additive e.g. additional Cargo features,
             # or when only runs from `master` should be saved to the cache.
             # default: "true"
-          save-cache: ""
+          save-if: ""
             # To only cache runs from `master`:
           save-if: ${{ github.ref == 'refs/head/master' }}
         
@@ -77,9 +77,9 @@ jobs:
           cache-provider: ""   
       - name: Install Dozer
         run: cargo install --path dozer/dozer-cli --features cloud
-      - name: Init
-        run: dozer init && ./init.sh
-      - name: Run Dozer
-        run: dozer cloud login --organisation_slug dozerinternsample-xwcov --profile_name default --client_id 5bhrickg9ee1fn3cqoikgaf7o8 --client_secret 1c8ma15um3tjsh35mouuat3emdk2ia4ohul5j48ahi3lu4m1i7lp
-      - name: Run Dozer
-        run: dozer deploy -c dozer-config.yaml
+      #- name: Init
+      #  run: dozer init && ./init.sh
+      #- name: Run Dozer
+      #  run: dozer cloud login --organisation_slug dozerinternsample-xwcov --profile_name default --client_id 5bhrickg9ee1fn3cqoikgaf7o8 --client_secret 1c8ma15um3tjsh35mouuat3emdk2ia4ohul5j48ahi3lu4m1i7lp
+      #- name: Run Dozer
+      #  run: dozer deploy -c dozer-config.yaml
