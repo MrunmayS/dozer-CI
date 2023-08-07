@@ -9,5 +9,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Run dozer
-        run: dozer -c dozer-config.yaml
+      - name: Pull Dozer
+        run: git clone https://github.com/getdozer/dozer
+      - name: Install Dozer
+        run: cd dozer && cargo install --path dozer-cli --features cloud
+      - name: Run Dozer
+        run: cd .. && dozer cloud login --organisation_slug dozerinternsample-xwcov --profile_name default --client_id 5bhrickg9ee1fn3cqoikgaf7o8 --client_secret 1c8ma15um3tjsh35mouuat3emdk2ia4ohul5j48ahi3lu4m1i7lp
