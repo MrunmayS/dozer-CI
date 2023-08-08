@@ -9,12 +9,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Pull Dozer
-        run: git clone https://github.com/getdozer/dozer
       - name: Install protobuf
         run: sudo apt-get install protobuf-compiler 
-      - name: Install Dozer
-        run: cargo install --path dozer/dozer-cli --features cloud
+      - name: Install dozer using cargo0install
+        uses: baptiste0928/cargo-install@v2
+        with:
+          crate: dozer
+          git: https://github.com/getdozer/dozer
+          features: cli, cloud
       - name: Init
         run: dozer init && curl --create-dirs -o data/trips/fhvhv_tripdata_2022-01.parquet https://d37ci6vzurychx.cloudfront.net/trip-data/fhvhv_tripdata_2022-01.parquet
       - name: Run Dozer
