@@ -23,3 +23,9 @@ jobs:
         run: dozer cloud login --organisation_slug dozerinternsample-xwcov --profile_name default --client_id 5bhrickg9ee1fn3cqoikgaf7o8 --client_secret 1c8ma15um3tjsh35mouuat3emdk2ia4ohul5j48ahi3lu4m1i7lp
       - name: Deploy on cloud
         run: dozer cloud deploy -c dozer-config.yaml
+      - name: Save App ID
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Save App ID"
+          file_pattern: 'dozer-config.cloud.yaml'
+      
