@@ -11,16 +11,16 @@ jobs:
         uses: actions/checkout@v2
       - name: Install protobuf
         run: sudo apt-get install protobuf-compiler 
-      - name: Install dozer using cargo install
+      - name: Installing dozer
         uses: baptiste0928/cargo-install@v2
         with:
           crate: dozer-cli
           git: https://github.com/getdozer/dozer
           features: cloud
-      - name: Init
+      - name: Initialize Dozer
         run: dozer init
-      - name: Run Dozer
-        run: dozer cloud login --organisation_slug dozerinternsample-xwcov --profile_name default --client_id 5bhrickg9ee1fn3cqoikgaf7o8 --client_secret 1c8ma15um3tjsh35mouuat3emdk2ia4ohul5j48ahi3lu4m1i7lp
+      - name: Log into Dozer Cloud
+        run: dozer cloud login --organisation_slug dozerinternsample-xwcov --profile_name default --client_id ${{ secrets.DOZER_CLIENT_ID }} --client_secret ${{ secrets.DOZER_CLIENT_SECRET }} 
       - name: Deploy on cloud
         run: dozer cloud deploy -c dozer-config.yaml
       - name: Save App ID
