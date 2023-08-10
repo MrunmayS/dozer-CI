@@ -35,8 +35,8 @@ jobs:
         run: |
           envsubst < dozer-config.yaml > dozer-config.btc.yaml
         env:
-          AWS_ACCESS_KEY: dwwdw
-          AWS_SECRET: wdijf
+          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET: ${{ secrets.AWS_SECRET }}
       - name: ls
         run: cat dozer-config.btc.yaml
       - name: Deploy on cloud
