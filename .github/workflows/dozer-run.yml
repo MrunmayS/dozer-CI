@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - main
+env:
+  AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+  AWS_SECRET: ${{ secrets.AWS_SECRET }}
 jobs:
   run-script:
     runs-on: ubuntu-latest
