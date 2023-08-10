@@ -1,4 +1,4 @@
-app_name: btc_history
+app_name: btc_history_CI
 
 connections:
   - config : !S3Storage
