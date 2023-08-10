@@ -1,4 +1,4 @@
-app_name: btc_CI_with_env
+app_name: btc_CI_with_env_1
 
 connections:
   - config : !S3Storage
