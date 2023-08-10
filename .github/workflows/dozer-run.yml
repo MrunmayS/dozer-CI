@@ -17,7 +17,7 @@ jobs:
           crate: dozer-cli
           git: https://github.com/getdozer/dozer
           features: cloud
-          locked: true
+
       - name: Initialize Dozer
         run: dozer init
       - name: Log into Dozer Cloud
