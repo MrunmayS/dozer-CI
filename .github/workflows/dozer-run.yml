@@ -33,10 +33,10 @@ jobs:
       - name: Log into Dozer Cloud
         run: dozer cloud login --organisation_slug dozerinternsample-xwcov --profile_name default --client_id ${{ secrets.DOZER_CLIENT_ID }} --client_secret ${{ secrets.DOZER_CLIENT_SECRET }} 
       - name: Deploy on cloud
-        if: ${{ !contains(github.event.head_commit.message, 'Del') }}
+        if: ${{ contains(github.event.head_commit.message, 'Dep') }}
         run: dozer cloud deploy -s AWS_ACCESS_KEY=${{secrets.AWS_ACCESS_KEY}} -s AWS_SECRET=${{secrets.AWS_SECRET}} -c dozer-config.yaml
       - name: Save App ID
-        if: ${{ !contains(github.event.head_commit.message, 'Del') }}
+        if: ${{ contains(github.event.head_commit.message, 'Dep') }}
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Save App ID"
