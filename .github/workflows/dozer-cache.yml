@@ -1,0 +1,22 @@
+name: Cache Dozer
+on:
+  push:
+    branches:
+      - main
+      - dozer-cache
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install protobuf
+        run: sudo apt-get install protobuf-compiler 
+      - name: Caching dozer
+        uses: baptiste0928/cargo-install@v2
+        with:
+          crate: dozer-cli
+          git: https://github.com/getdozer/dozer
+          version: "0.1.33"
+          features: cloud
+          locked: true
