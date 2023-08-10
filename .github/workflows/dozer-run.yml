@@ -35,12 +35,11 @@ jobs:
       - name: Deploy on cloud
         if: ${{ contains(github.event.head_commit.message, 'Dep') }}
         run: dozer cloud deploy -s AWS_ACCESS_KEY=${{secrets.AWS_ACCESS_KEY}} -s AWS_SECRET=${{secrets.AWS_SECRET}} -c dozer-config.yaml
-      - name: Save App ID
-        if: ${{ contains(github.event.head_commit.message, 'Dep') }}
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "Save App ID"
-          file_pattern: 'dozer-config.cloud.yaml'
       - name: Delete App
         if: ${{ contains(github.event.head_commit.message, 'Del') }}
         run: dozer cloud delete
+      - name: Save App ID
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Save App ID"
+          file_pattern: '*.cloud.yaml'
