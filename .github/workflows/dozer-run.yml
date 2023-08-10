@@ -31,16 +31,9 @@ jobs:
         run: dozer init
       - name: Log into Dozer Cloud
         run: dozer cloud login --organisation_slug dozerinternsample-xwcov --profile_name default --client_id ${{ secrets.DOZER_CLIENT_ID }} --client_secret ${{ secrets.DOZER_CLIENT_SECRET }} 
-      - name: Make config
-        run: |
-          envsubst < dozer-config.yaml > dozer-config.btc.yaml
-        env:
-          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
-          AWS_SECRET: ${{ secrets.AWS_SECRET }}
-      - name: ls
-        run: cat dozer-config.btc.yaml
       - name: Deploy on cloud
-        run: dozer cloud deploy -c dozer-config.btc.yaml
+        run: dozer cloud deploy -s AWS_ACCESS_KEY=${{secrets.AWS_ACCESS_KEY}} -s AWS_SECRET=${{secrets.AWS_SECRET}} --config dozer-config.yaml
+
       - name: Save App ID
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
