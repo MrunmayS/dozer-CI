@@ -3,7 +3,7 @@ app_name: btc_history_CI
 connections:
   - config : !S3Storage
       details:
-        access_key_id:  ${{ secrets.AWS_ACCESS_KEY }}
+        access_key_id: ${{ secrets.AWS_ACCESS_KEY }}
         secret_access_key: ${{ secrets.AWS_SECRET }}
         region: 'us-west-2'
         bucket_name: mrun-stress-test-dozer
