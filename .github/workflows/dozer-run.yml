@@ -17,5 +17,6 @@ jobs:
         with:
           crate: dozer-cli
           git: https://github.com/getdozer/dozer
+          version: "0.1.33"
           features: cloud
           locked: true
