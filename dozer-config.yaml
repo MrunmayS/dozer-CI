@@ -1,4 +1,4 @@
-app_name: customer-financial-profile-llm
+app_name: customer-financial-profile
 
 connections:
   - config : !S3Storage
