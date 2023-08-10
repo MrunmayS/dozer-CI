@@ -37,6 +37,8 @@ jobs:
         env:
           AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET: ${{ secrets.AWS_SECRET }}
+      - name: ls
+        run: ls
       - name: Deploy on cloud
         run: dozer cloud deploy -c dozer-config.btc.yaml
       - name: Save App ID
