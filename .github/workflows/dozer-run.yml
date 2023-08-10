@@ -18,6 +18,3 @@ jobs:
           crate: dozer-cli
           git: https://github.com/getdozer/dozer
           features: cloud
-      - name: Use access key
-        run: |
-          echo "Using access key: $ { { secrets.AWS_ACCESS_KEY }}"
