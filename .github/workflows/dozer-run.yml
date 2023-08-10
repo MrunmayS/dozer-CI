@@ -11,22 +11,10 @@ jobs:
         uses: actions/checkout@v2
       - name: Install protobuf
         run: sudo apt-get install protobuf-compiler 
-      - name: Installing dozer
+      - name: Caching dozer
         uses: baptiste0928/cargo-install@v2
         with:
           crate: dozer-cli
           git: https://github.com/getdozer/dozer
           features: cloud
           locked: true
-      - name: Initialize Dozer
-        run: dozer init
-      - name: Log into Dozer Cloud
-        run: dozer cloud login --organisation_slug dozerinternsample-xwcov --profile_name default --client_id ${{ secrets.DOZER_CLIENT_ID }} --client_secret ${{ secrets.DOZER_CLIENT_SECRET }} 
-      - name: Deploy on cloud
-        run: dozer cloud delete && dozer cloud deploy -c dozer-config.yaml
-      - name: Save App ID
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "Save App ID"
-          file_pattern: 'dozer-config.cloud.yaml'
-      
