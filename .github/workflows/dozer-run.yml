@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - dozer-cache
 jobs:
   run-script:
     runs-on: ubuntu-latest
@@ -17,4 +18,3 @@ jobs:
           crate: dozer-cli
           git: https://github.com/getdozer/dozer
           features: cloud
-          locked: true
