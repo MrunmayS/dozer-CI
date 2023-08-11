@@ -27,17 +27,26 @@ jobs:
           git: https://github.com/getdozer/dozer
           features: cloud
           locked: true
+      - name: Check App ID
+        id: check_files
+        uses: andstor/file-existence-action@v2
+        with:
+          files: "dozer-config.cloud.yaml"
+  
+      - name: File exists
+        if: steps.check_files.outputs.files_exists == 'true'
+        # Only runs if all of the files exists
+        run: echo All files exists!
       - name: Initialize Dozer
         run: dozer init
       - name: Log into Dozer Cloud
         run: dozer cloud login --organisation_slug dozerinternsample-xwcov --profile_name default --client_id ${{ secrets.DOZER_CLIENT_ID }} --client_secret ${{ secrets.DOZER_CLIENT_SECRET }} 
-      - name: Run Dozer
-        run: |
-          if [-f dozer-config.cloud.yaml]; then
-            dozer cloud deploy -s AWS_ACCESS_KEY=${{secrets.AWS_ACCESS_KEY}} -s AWS_SECRET=${{secrets.AWS_SECRET}}
-          else
-            dozer cloud deploy -s AWS_ACCESS_KEY=${{secrets.AWS_ACCESS_KEY}} -s AWS_SECRET=${{secrets.AWS_SECRET}} -c dozer-config.yaml
-          fi
+      - name: Update Dozer
+        if: steps.check_files.outputs.files_exists == 'true'
+        run: dozer cloud deploy -s AWS_ACCESS_KEY=${{secrets.AWS_ACCESS_KEY}} -s AWS_SECRET=${{secrets.AWS_SECRET}}
+      - name: Deploy Dozer
+        if: steps.check_files.outputs.files_exists == 'false'
+        run: dozer cloud deploy -s AWS_ACCESS_KEY=${{secrets.AWS_ACCESS_KEY}} -s AWS_SECRET=${{secrets.AWS_SECRET}} -c dozer-config.yaml
 
       - name: Save App ID
         uses: stefanzweifel/git-auto-commit-action@v4
