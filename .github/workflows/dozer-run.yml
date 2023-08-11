@@ -29,7 +29,7 @@ jobs:
 
   run-script:
     needs: prep
-    if:   ${{ !contains(github.event.head_commit.message, 'Dep') }}
+    if:   ${{ !contains(github.event.head_commit.message, 'Wip') }}
     runs-on: ubuntu-latest
     steps: 
       - name: Checkout repository
