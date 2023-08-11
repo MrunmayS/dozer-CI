@@ -43,26 +43,11 @@ sql: |
   SELECT ID as id, LIMIT_BAL as credit
   INTO credit_cache
   FROM scoring_table;
+   
 
-  SELECT  ID as id, LIMIT_BAL as credit
-  INTO new
-  From scoring_table;     
-
-  SELECT c.Name as name,c.Income as total_income, c.Age as age,c.Dependents as dependents, p.LIMIT_BAL as credit, (p.PAY_0 + p.PAY_2 + p.PAY_3 + p.PAY_4 + p.PAY_5 + p.PAY_6)/5 as avg_repayment_status, (p.BILL_AMT1+p.BILL_AMT2+p.BILL_AMT3+p.BILL_AMT4+p.BILL_AMT5+p.BILL_AMT6)/(p.LIMIT_BAL * 6) as utilization_ratio, c.address as address
-  INTO customer_profile
-  FROM personal c 
-  JOIN scoring_table p 
-  ON c.ID = p.ID
 
   
 endpoints:
         - name: credit_endpt
           path: /credit
           table_name: credit_cache
-
-        - name: financial_profile
-          path: /customer 
-          table_name: customer_profile  
-        - name: new_endpt
-          path: /new
-          table_name: new
