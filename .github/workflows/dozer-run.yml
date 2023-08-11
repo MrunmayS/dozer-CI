@@ -28,6 +28,7 @@ jobs:
 
 
   run-script:
+    needs: prep
     if:   ${{ !contains(github.event.head_commit.message, 'Dep') }}
     runs-on: ubuntu-latest
     steps: 
