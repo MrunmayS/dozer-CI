@@ -7,9 +7,29 @@ env:
   AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
   AWS_SECRET: ${{ secrets.AWS_SECRET }}
 jobs:
-  run-script:
+  prep:
     runs-on: ubuntu-latest
-    if: ${{ !contains(github.event.head_commit.message, 'Wip') }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Check command
+        id: check
+        run: |
+          if grep -q "Upd" action.txt; then
+            echo "::set-output name=contains_string::Upd"
+          elif grep -q "Del" action.txt; then
+            echo "::set-output name=contains_string::Del"
+          elif grep -q "Dep" action.txt; then
+            echo "::set-output name=contains_string::Dep"
+          else
+            echo "::set-output name=contains_string::Wip"
+          fi
+
+
+  run-script:
+    needs: prep
+    if:  needs.prep.outputs.contains_string != 'Upd'
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
