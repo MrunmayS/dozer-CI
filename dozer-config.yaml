@@ -29,13 +29,11 @@ sql: |
   FROM history_data
   WHERE Close > Open;
 
-  SELECT
-  DATE(timestamp) AS date,
-  SUM(size) AS total_volume
+  SELECT   DATE(timestamp) AS date,   SUM(size) AS total_volume
+  INTO volume_cache
   FROM history_data
   GROUP BY date
-  ORDER BY date
-  INTO volume_cache;
+  ORDER BY date;
 endpoints:
         - name: closehigh_endpoint
           path: /btc_data
