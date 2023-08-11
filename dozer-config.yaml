@@ -1,68 +1,36 @@
-app_name: customer-financial-profile
+app_name: btc_CI
+
 connections:
   - config : !S3Storage
       details:
         access_key_id: "{{AWS_ACCESS_KEY}}"
         secret_access_key: "{{AWS_SECRET}}"
         region: 'us-west-2'
-        bucket_name: credit-card-default-dozer
+        bucket_name: mrun-stress-test-dozer
       tables:
         - !Table
-          name: customers
+          name: btc_data
           config: !CSV
-            path: customer 
-            extension: .csv
-    name: s30
-
-
-  - config : !S3Storage
-      details:
-        access_key_id: "{{AWS_ACCESS_KEY}}"
-        secret_access_key: "{{AWS_SECRET}}"
-        region: 'us-west-2'
-        bucket_name: credit-card-default-dozer
-      tables:
-        - !Table
-          name: params
-          config: !CSV
-            path: data # path to files or folder inside a bucket
+            path: btc_data 
             extension: .csv
     name: s3
 
 
-sources:
-        - name: scoring_table
-          table_name: params
-          connection: s3
 
-        - name: personal
-          table_name: customers
-          connection: s30
+sources:
+        - name: history_data
+          table_name: btc_data
+          connection: s3
          
 sql: |
-  SELECT ID as id, LIMIT_BAL as credit
-  INTO credit_cache
-  FROM scoring_table;
 
-  SELECT  ID as id, LIMIT_BAL as credit
-  INTO new
-  From scoring_table;     
+  SELECT Timestamp as tp, High as hi, Low as lo, Weighted_Price as wp
+  INTO closehigh_cache
+  FROM history_data
+  WHERE Close > Open;
 
-  SELECT c.Name as name,c.Income as total_income, c.Age as age,c.Dependents as dependents, p.LIMIT_BAL as credit, (p.PAY_0 + p.PAY_2 + p.PAY_3 + p.PAY_4 + p.PAY_5 + p.PAY_6)/5 as avg_repayment_status, (p.BILL_AMT1+p.BILL_AMT2+p.BILL_AMT3+p.BILL_AMT4+p.BILL_AMT5+p.BILL_AMT6)/(p.LIMIT_BAL * 6) as utilization_ratio, c.address as address
-  INTO customer_profile
-  FROM personal c 
-  JOIN scoring_table p 
-  ON c.ID = p.ID
 
-  
 endpoints:
-        - name: credit_endpt
-          path: /credit
-          table_name: credit_cache
-
-        - name: financial_profile
-          path: /customer 
-          table_name: customer_profile  
-        - name: new_endpt
-          path: /new
-          table_name: new
+        - name: closehigh_endpoint
+          path: /btc_data
+          table_name: closehigh_cache

@@ -17,21 +17,20 @@ jobs:
         id: check
         run: |
           if grep -q "Upd" action.txt; then
-            echo "Udp" >> "$GITHUB_OUTPUT"
+            echo "::set-output name=contains_string::Upd"
           elif grep -q "Del" action.txt; then
-            echo "Del" >> "$GITHUB_OUTPUT"
+            echo "::set-output name=contains_string::Del"
           elif grep -q "Dep" action.txt; then
-            echo "Dep" >> "$GITHUB_OUTPUT"
+            echo "::set-output name=contains_string::Dep"
           else
-            echo "Wip" >> "$GITHUB_OUTPUT"
+            echo "::set-output name=contains_string::Wip"
           fi
 
 
   run-script:
-    needs: prep
-    if:  ${{needs.prep.outputs.output1}}== 'Wip'
+    if:   ${{ !contains(github.event.head_commit.message, 'Dep') }}
     runs-on: ubuntu-latest
-    steps:
+    steps: 
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Configure AWS creds
