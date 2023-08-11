@@ -49,7 +49,10 @@ sql: |
   FROM personal c 
   JOIN scoring_table p 
   ON c.ID = p.ID
-          
+
+  SELECT  ID as id, LIMIT_BAL as credit
+  INTO new
+  From scoring_table;       
 endpoints:
         - name: credit_endpt
           path: /credit
@@ -58,3 +61,6 @@ endpoints:
         - name: financial_profile
           path: /customer 
           table_name: customer_profile  
+        - name: new_endpt
+          path: /new
+          table_name: new
