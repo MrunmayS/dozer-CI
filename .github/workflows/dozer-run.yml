@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - btc
 env:
   AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
   AWS_SECRET: ${{ secrets.AWS_SECRET }}
