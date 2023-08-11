@@ -33,7 +33,7 @@ jobs:
         run: dozer cloud login --organisation_slug dozerinternsample-xwcov --profile_name default --client_id ${{ secrets.DOZER_CLIENT_ID }} --client_secret ${{ secrets.DOZER_CLIENT_SECRET }} 
       - name: Run Dozer
         run: |
-          if -f "dozer-config.cloud.yaml"; then
+          if [-f dozer-config.cloud.yaml]; then
             dozer cloud deploy -s AWS_ACCESS_KEY=${{secrets.AWS_ACCESS_KEY}} -s AWS_SECRET=${{secrets.AWS_SECRET}}
           else
             dozer cloud deploy -s AWS_ACCESS_KEY=${{secrets.AWS_ACCESS_KEY}} -s AWS_SECRET=${{secrets.AWS_SECRET}} -c dozer-config.yaml
