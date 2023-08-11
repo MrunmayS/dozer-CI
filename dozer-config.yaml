@@ -32,8 +32,7 @@ sql: |
   SELECT   DATE(timestamp) AS date,   SUM(size) AS total_volume
   INTO volume_cache
   FROM history_data
-  GROUP BY date
-  ORDER BY date;
+  GROUP BY date;
 endpoints:
         - name: closehigh_endpoint
           path: /btc_data
